@@ -1,0 +1,53 @@
+--SELECT COUNT(*) FROM oyo
+-- Let's see the count of distinct customers in oyo bookings
+--SELECT COUNT(DISTINCT(customer_id)) FROM oyo;
+
+SELECT * FROM oyo;
+SELECT * FROM hotels;
+
+SELECT COUNT(DISTINCT(hotel_id)) FROM hotels;
+-- There are 357 different hotels 
+
+SELECT COUNT(DISTINCT(city)) FROM hotels;
+-- There are 10 different cities
+
+-- Find number of hotels in different cities    
+SELECT city, COUNT(hotel_id) as no_of_hotels
+FROM hotels
+GROUP BY city
+ORDER BY no_of_hotels DESC;
+
+
+-- AVERAGE ROOM RATES IN RUPEES BY CITY
+
+
+-- Creating a new column rate
+ALTER TABLE oyo ADD COLUMN price float;
+UPDATE oyo SET price = amount + discount;
+
+-- Creating a new column no_of_nights
+ALTER TABLE oyo ADD COLUMN no_of_nights INT;
+
+UPDATE oyo SET no_of_nights = check_out - check_in
+
+-- Adding a new column rate to calculate the rate
+ALTER TABLE oyo ADD COLUMN rate float;
+
+-- Creating formula for rate
+UPDATE oyo SET rate = (price/no_of_nights)/no_of_rooms;
+
+----------------------------------------
+SELECT hotels.city, AVG(rate) as average_amount
+FROM oyo
+INNER JOIN hotels
+on oyo.hotel_id = hotels.hotel_id
+GROUP BY hotels.city
+ORDER BY average_amount DESC;
+--------------------------------------
+
+
+
+
+
+
+
