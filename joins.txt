@@ -1,0 +1,105 @@
+--ORDERS TABLE
+
+CREATE table Orders(
+OrderId INTEGER PRIMARY KEY,
+OrderDate DATE,
+ShippedDate DATE,
+ProductName VARCHAR(20),
+StatusOfDelivery VARCHAR(10),
+Quantity INTEGER,
+PriceOfProduct INTEGER
+)
+-- CUSTOMERS TABLE
+
+CREATE table Customers(
+OrderId INTEGER,
+CustomerId INTEGER PRIMARY KEY,
+PhoneNumber VARCHAR(20),
+CustomerName VARCHAR(20),
+Address VARCHAR(100),
+City VARCHAR(20),
+FOREIGN KEY(OrderId) REFERENCES Orders(OrderId));
+
+DROP TABLE Customers;
+
+-- INSERTING VALUES INTO ORDERS AND CUSTOMERS TABLE
+
+INSERT INTO Orders VALUES(1,'2022-08-10','2022-08-20','Colgate','Delivered',5,100)
+INSERT INTO Orders VALUES(2,'2022-08-01','2022-08-10','Casio','Delivered',1,2100)
+INSERT INTO Orders VALUES(3,'2022-08-10','2022-08-15','Guitar','Delivered',1,3000)
+INSERT INTO Orders VALUES(4,'2022-08-16','2022-08-20','Cadbury','Delivered',10,20)
+INSERT INTO Orders VALUES(5,'2022-06-10','2022-06-14','Idli Maker','Delivered',1,300)
+
+INSERT INTO Orders VALUES(6,'2021-12-22','2021-12-24','Christmas Toys','Delivered',3,100)
+
+INSERT INTO Customers (OrderId,CustomerId,PhoneNumber,CustomerName,Address,City) 
+VALUES
+    (1,100,8123156782,'Rajeev','4-3/2a Milk Street', 'Chennai'),
+    (2,200,8333456782,'Vijay','abc street', 'Kolkata'),
+    (3,300,8123156421,'Ajay','9-56 Chocolava Street', 'Vijayawada'),
+    (4,400,8123435482,'Akshay','56-/34 Valentine Lane', 'Delhi'),
+    (5,500,8123324782,'Mohan','7-4/2a CutSoup Street', 'Mumbai')
+    
+INSERT INTO Customers VALUES(6,600,8134609873,'Asutosh','3/34 Dal Lake','Pune')
+    
+-- VIEW THE TABLES
+
+SELECT * from Orders;
+SELECT * from Customers;
+    
+/*1. Find the phone number of customer who has ordered Cadbury
+For the above operation joins are required because, phone number is present in customer table and the product name is present in the order table.
+INNER JOIN :
+SQL Inner Join statement returns all the rows from multiple tables as long as the conditons are met.
+SYNTAX : SELECT <field list> FROM Table A INNER JOIN Table B ON A.key = B.key */
+
+CREATE TABLE Cricket(
+cricket_id SERIAL PRIMARY KEY,
+Name VARCHAR(20))
+
+INSERT INTO Cricket(Name)
+VALUES ('Deep'),('Arnold'),('Alisson'),('Rohit'),('Sachin'),('Kohli'),('Pujara')
+    
+CREATE TABLE Football(
+football_id SERIAL PRIMARY KEY,
+Name VARCHAR(20))
+
+INSERT INTO Football(Name)
+VALUES ('Deep'),('Arnold'),('Alisson'),('Haaland'),('Salah'),('Beckham'),('Suarez')
+
+SELECT * FROM Cricket;
+SELECT * FROM Football;
+
+/* Suppose you want to find the name of the players who are part of both the cricket team and the football team, in this case you will use an inner join */
+
+SELECT f.name
+FROM Cricket c
+INNER JOIN Football f
+ON c.name = f.name 
+
+SELECT f.name
+FROM Cricket c
+INNER JOIN Football f
+using(name)
+
+/* SQL LEFT JOIN STATEMENT RETURNS ALL THE ROWS FROM THE LEFT TABLE AND MATCHING ROWS FROM THE LEFT TABLE */
+
+SELECT *
+FROM cricket c
+LEFT JOIN football f
+on c.name = f.name
+
+/* SQL RIGHT JOIN STATEMENT RETURNS ALL THE ROWS FROM THE LEFT TABLE AND MATCHING ROWS FROM THE RIGHT TABLE */
+
+SELECT *
+FROM cricket c
+RIGHT JOIN football f
+on c.name = f.name
+
+/* SELF JOINS ARE USED TO JOIN A TABLE WITH ITSELF*/
+
+/* SQL FULL OUTER JOIN STATEMENT RETURNS ALL THE ROWS WHEN THERE IS A MATCH IN EITHER LEFT OR RIGHT TABLE */
+
+SELECT * FROM cricket A
+FULL OUTER JOIN football B on A.cricket_id = B.football_id;
+
